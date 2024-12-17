@@ -1,0 +1,9 @@
+{
+    "name": "gwsilva/untitled",
+    "autoload": {
+        "psr-4": {
+            "FileOrganizer\\": "app/"
+        }
+    },
+    "require": {}
+}
