@@ -3,6 +3,7 @@
 namespace FileOrganizer\Organizer;
 
 use FileOrganizer\Enums\Extension;
+use FileOrganizer\Managers\DirectoryManager;
 
 class TextFiles
 {
@@ -15,7 +16,7 @@ class TextFiles
         //..
     }
 
-    public function __invoke(): void
+    public function organize(): void
     {
         $fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
 
@@ -26,13 +27,8 @@ class TextFiles
             Extension::tryFrom($fileExtension) === Extension::TXT
         ) {
 
-            if (!is_dir($this->newPath . 'arquivos_de_texto/')) {
-                mkdir($this->newPath . 'arquivos_de_texto/', 0777, true);
-            }
-
-            if (!file_exists($this->newPath . 'arquivos_de_texto/' . $this->file)) {
-                rename($this->oldPath . $this->file, $this->newPath . 'arquivos_de_texto/' . $this->file);
-            }
+            new DirectoryManager($this->file)
+                ->make($this->newPath, $this->oldPath, 'arquivos_de_texto/');
 
         }
     }

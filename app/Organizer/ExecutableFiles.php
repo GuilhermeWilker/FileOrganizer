@@ -3,6 +3,7 @@
 namespace FileOrganizer\Organizer;
 
 use FileOrganizer\Enums\Extension;
+use FileOrganizer\Managers\DirectoryManager;
 
 class ExecutableFiles
 {
@@ -15,7 +16,7 @@ class ExecutableFiles
         //..
     }
 
-    public function __invoke(): void
+    public function organize(): void
     {
         $fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
 
@@ -24,13 +25,8 @@ class ExecutableFiles
             Extension::tryFrom($fileExtension) === Extension::MSI
         ) {
 
-            if (!is_dir($this->newPath . 'executáveis/')) {
-                mkdir($this->newPath . 'executáveis/', 0777, true);
-            }
-
-            if (!file_exists($this->newPath . 'executáveis/' . $this->file)) {
-                rename($this->oldPath . $this->file, $this->newPath . 'executáveis/' . $this->file);
-            }
+            new DirectoryManager($this->file)
+                ->make($this->newPath, $this->oldPath, 'executáveis/');
 
         }
     }

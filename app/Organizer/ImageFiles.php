@@ -3,6 +3,7 @@
 namespace FileOrganizer\Organizer;
 
 use FileOrganizer\Enums\Extension;
+use FileOrganizer\Managers\DirectoryManager;
 
 class ImageFiles
 {
@@ -15,7 +16,7 @@ class ImageFiles
         //..
     }
 
-    public function __invoke(): void
+    public function organize(): void
     {
         $fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
 
@@ -26,13 +27,8 @@ class ImageFiles
             Extension::tryFrom($fileExtension) === Extension::ICO
         ) {
 
-            if (!is_dir($this->newPath . 'imagens/')) {
-                mkdir($this->newPath . 'imagens/', 0777, true);
-            }
-
-            if (!file_exists($this->newPath . 'imagens/' . $this->file)) {
-                rename($this->oldPath . $this->file, $this->newPath . 'imagens/' . $this->file);
-            }
+            new DirectoryManager($this->file)
+                ->make($this->newPath, $this->oldPath, 'imagens/');
 
         }
     }

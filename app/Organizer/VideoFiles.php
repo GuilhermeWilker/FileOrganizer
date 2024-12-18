@@ -3,6 +3,7 @@
 namespace FileOrganizer\Organizer;
 
 use FileOrganizer\Enums\Extension;
+use FileOrganizer\Managers\DirectoryManager;
 
 class VideoFiles
 {
@@ -15,7 +16,7 @@ class VideoFiles
         //..
     }
 
-    public function __invoke(): void
+    public function organize(): void
     {
         $fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
 
@@ -24,13 +25,8 @@ class VideoFiles
             Extension::tryFrom($fileExtension) === Extension::MOV
         ) {
 
-            if (!is_dir($this->newPath . 'videos/')) {
-                mkdir($this->newPath . 'videos/', 0777, true);
-            }
-
-            if (!file_exists($this->newPath . 'videos/' . $this->file)) {
-                rename($this->oldPath . $this->file, $this->newPath . 'videos/' . $this->file);
-            }
+            new DirectoryManager($this->file)
+                ->make($this->newPath, $this->oldPath, 'videos/');
 
         }
     }

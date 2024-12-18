@@ -3,6 +3,7 @@
 namespace FileOrganizer\Organizer;
 
 use FileOrganizer\Enums\Extension;
+use FileOrganizer\Managers\DirectoryManager;
 
 class CompressedFiles
 {
@@ -15,7 +16,7 @@ class CompressedFiles
         //..
     }
 
-    public function __invoke(): void
+    public function organize(): void
     {
         $fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
 
@@ -24,13 +25,8 @@ class CompressedFiles
             Extension::tryFrom($fileExtension) === Extension::ZIP
         ) {
 
-            if (!is_dir($this->newPath . 'compactados/')) {
-                mkdir($this->newPath . 'compactados/', 0777, true);
-            }
-
-            if (!file_exists($this->newPath . 'compactados/' . $this->file)) {
-                rename($this->oldPath . $this->file, $this->newPath . 'compactados/' . $this->file);
-            }
+            new DirectoryManager($this->file)
+                ->make($this->newPath, $this->oldPath, 'compactados/');
 
         }
     }

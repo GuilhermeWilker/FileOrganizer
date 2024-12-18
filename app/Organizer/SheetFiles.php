@@ -3,6 +3,7 @@
 namespace FileOrganizer\Organizer;
 
 use FileOrganizer\Enums\Extension;
+use FileOrganizer\Managers\DirectoryManager;
 
 class SheetFiles
 {
@@ -15,7 +16,7 @@ class SheetFiles
         //..
     }
 
-    public function __invoke(): void
+    public function organize(): void
     {
         $fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
 
@@ -24,13 +25,8 @@ class SheetFiles
             Extension::tryFrom($fileExtension) === Extension::XLS
         ) {
 
-            if (!is_dir($this->newPath . 'planilhas/')) {
-                mkdir($this->newPath . 'planilhas/', 0777, true);
-            }
-
-            if (!file_exists($this->newPath . 'planilhas/' . $this->file)) {
-                rename($this->oldPath . $this->file, $this->newPath . 'planilhas/' . $this->file);
-            }
+            new DirectoryManager($this->file)
+                ->make($this->newPath, $this->oldPath, 'planilhas/');
 
         }
     }

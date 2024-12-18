@@ -3,6 +3,7 @@
 namespace FileOrganizer\Organizer;
 
 use FileOrganizer\Enums\Extension;
+use FileOrganizer\Managers\DirectoryManager;
 
 class AudioFiles
 {
@@ -15,7 +16,7 @@ class AudioFiles
         //..
     }
 
-    public function __invoke(): void
+    public function organize(): void
     {
         $fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
 
@@ -24,13 +25,8 @@ class AudioFiles
             Extension::tryFrom($fileExtension) === Extension::M4A
         ) {
 
-            if (!is_dir($this->newPath . 'áudios/')) {
-                mkdir($this->newPath . 'áudios/', 0777, true);
-            }
-
-            if (!file_exists($this->newPath . 'áudios/' . $this->file)) {
-                rename($this->oldPath . $this->file, $this->newPath . 'áudios/' . $this->file);
-            }
+            new DirectoryManager($this->file)
+                ->make($this->newPath, $this->oldPath, 'áudios/');
 
         }
     }

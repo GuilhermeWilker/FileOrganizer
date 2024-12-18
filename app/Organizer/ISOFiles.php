@@ -3,6 +3,7 @@
 namespace FileOrganizer\Organizer;
 
 use FileOrganizer\Enums\Extension;
+use FileOrganizer\Managers\DirectoryManager;
 
 class ISOFiles
 {
@@ -15,7 +16,7 @@ class ISOFiles
         //..
     }
 
-    public function __invoke(): void
+    public function organize(): void
     {
         $fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
 
@@ -23,14 +24,8 @@ class ISOFiles
             Extension::tryFrom($fileExtension) === Extension::ISO
         ) {
 
-            if (!is_dir($this->newPath . 'ISO/')) {
-                mkdir($this->newPath . 'ISO/', 0777, true);
-            }
-
-            if (!file_exists($this->newPath . 'ISO/' . $this->file)) {
-                rename($this->oldPath . $this->file, $this->newPath . 'ISO
-                /' . $this->file);
-            }
+            new DirectoryManager($this->file)
+                ->make($this->newPath, $this->oldPath, 'ISO/');
 
         }
     }

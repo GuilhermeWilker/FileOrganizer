@@ -19,29 +19,22 @@ $filesDir = dir($downloadsDIR);
 
 while ($arquivo = $filesDir->read()) {
 
-    $textFiles = new TextFiles($downloadsDIR, $desktopDIR, $arquivo);
-    $textFiles();
+    new TextFiles($downloadsDIR, $desktopDIR, $arquivo)->organize();
 
-    $audioFiles = new AudioFiles($downloadsDIR, $desktopDIR, $arquivo);
-    $audioFiles();
+    new AudioFiles($downloadsDIR, $desktopDIR, $arquivo)->organize();
 
-    $videoFiles = new VideoFiles($downloadsDIR, $desktopDIR, $arquivo);
-    $videoFiles();
+    new VideoFiles($downloadsDIR, $desktopDIR, $arquivo)->organize();
 
-    $imageFiles = new ImageFiles($downloadsDIR, $desktopDIR, $arquivo);
-    $imageFiles();
+    new ImageFiles($downloadsDIR, $desktopDIR, $arquivo)->organize();
 
-    $sheetFiles = new SheetFiles($downloadsDIR, $desktopDIR, $arquivo);
-    $sheetFiles();
+    new SheetFiles($downloadsDIR, $desktopDIR, $arquivo)->organize();
 
-    $executableFiles = new ExecutableFiles($downloadsDIR, $desktopDIR, $arquivo);
-    $executableFiles();
+    new ExecutableFiles($downloadsDIR, $desktopDIR, $arquivo)->organize();
 
-    $compressedFiles = new CompressedFiles($downloadsDIR, $desktopDIR, $arquivo);
-    $compressedFiles();
+    new CompressedFiles($downloadsDIR, $desktopDIR, $arquivo)->organize();
 
-    $isoFiles = new IsoFiles($downloadsDIR, $desktopDIR, $arquivo);
-    $isoFiles();
+    new IsoFiles($downloadsDIR, $desktopDIR, $arquivo)->organize();
 
 }
+
 $filesDir->close();
