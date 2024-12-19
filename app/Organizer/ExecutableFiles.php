@@ -7,27 +7,27 @@ use FileOrganizer\Managers\DirectoryManager;
 
 class ExecutableFiles
 {
-    public function __construct(
-        public string $oldPath,
-        public string $newPath,
-        public string $file
-    )
+    public static function organize(string $oldPath, string $newPath, string $file): void
     {
-        //..
-    }
+        $fileExtension = pathinfo($file, PATHINFO_EXTENSION);
 
-    public function organize(): void
-    {
-        $fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
+        $folderName = "Executáveis/";
+
+        $directoryManager = new DirectoryManager($file);
 
         if (
             Extension::tryFrom($fileExtension) === Extension::EXE ||
             Extension::tryFrom($fileExtension) === Extension::MSI
         ) {
 
-            new DirectoryManager($this->file)
-                ->make($this->newPath, $this->oldPath, 'executáveis/');
+            $directoryManager
+                ->make($newPath, $oldPath, $folderName . 'Instaladores/');
 
+        } else if (
+            Extension::tryFrom($fileExtension) === Extension::ISO
+        ) {
+            $directoryManager
+                ->make($newPath, $oldPath, $folderName . 'ISOs/');
         }
     }
 }

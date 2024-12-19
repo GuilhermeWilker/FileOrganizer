@@ -28,4 +28,7 @@ enum Extension: string {
     case RAR = 'rar';
 
     case ISO = 'iso';
+
+    case LNK = 'lnk';
+    case URL = 'url';
 }
