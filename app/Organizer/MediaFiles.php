@@ -3,9 +3,10 @@
 namespace FileOrganizer\Organizer;
 
 use FileOrganizer\Enums\Extension;
+use FileOrganizer\Interfaces\FilesOrganizer;
 use FileOrganizer\Managers\DirectoryManager;
 
-class MediaFiles
+class MediaFiles implements FilesOrganizer
 {
     public static function organize(string $oldPath, string $newPath, string $file): void
     {
